@@ -3,18 +3,6 @@ import config from './config/index'
 
 export default {
   endpoint: config.endpoint,
-  getMeta() {
-    return new Promise((resolve, reject) => {
-      axios.defaults.baseURL = this.endpoint
-      axios.get().then(response => {
-        if (response.status === 200) {
-          resolve(response.data)
-        } else {
-          reject(response)
-        }
-      })
-    })
-  },
   getPage(params) {
     return new Promise((resolve, reject) => {
       axios.defaults.baseURL = this.endpoint

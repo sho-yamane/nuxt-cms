@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
 import api from '../../api/wp/index'
 import AppHeader from '../../components/AppHeader'
 import AppFooter from '../../components/AppFooter'
@@ -27,14 +26,7 @@ export default {
     // 数値でなければならない
     return /^\d+$/.test(params.id)
   },
-  computed: {
-    ...mapState(['meta'])
-  },
-  async asyncData({ store, params }) {
-    if (!Object.keys(store.state.meta).length) {
-      store.dispatch('fetchMeta')
-    }
-
+  async asyncData({ params }) {
     const urlParams = {
       id: params.id,
       thumbnailSize: 'large' // full or large or medium
@@ -47,14 +39,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchMeta']),
     dateFormat(date) {
       return this.$_dateFormat(date)
     }
   },
   head() {
     return {
-      title: `${this.post.title} - ${this.meta.title}`
+      title: `${this.post.title}`
     }
   }
 }

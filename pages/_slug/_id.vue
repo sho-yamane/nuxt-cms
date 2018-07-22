@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import AppHeader from '../../components/AppHeader'
 import AppFooter from '../../components/AppFooter'
 import AppPosts from '../../components/AppPosts'
@@ -28,14 +27,7 @@ export default {
       catSlug: 'news'
     }
   },
-  computed: {
-    ...mapState(['meta'])
-  },
-  async asyncData({ store, params }) {
-    if (!Object.keys(store.state.meta).length) {
-      await store.dispatch('fetchMeta')
-    }
-
+  async asyncData({ params }) {
     return {
       page: parseInt(params.id),
       catSlug: params.slug
@@ -43,7 +35,7 @@ export default {
   },
   head() {
     return {
-      title: `${this.catSlug}(${this.page}ページ目) - ${this.meta.title}`
+      title: `${this.catSlug}(${this.page}ページ目)`
     }
   }
 }

@@ -14,20 +14,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import api from '../../api/wp/index'
 import AppHeader from '../../components/AppHeader'
 import AppFooter from '../../components/AppFooter'
 export default {
   name: 'SlugPage',
   components: { AppFooter, AppHeader },
-  computed: {
-    ...mapState(['meta'])
-  },
-  async asyncData({ store, params }) {
-    if (!Object.keys(store.state.meta).length) {
-      store.dispatch('fetchMeta')
-    }
+  async asyncData({ params }) {
     const urlParams = {
       slug: params.slug,
       thumbnailSize: 'large' // full or large or medium
@@ -41,7 +34,7 @@ export default {
   },
   head() {
     return {
-      title: `${this.page.title} - ${this.meta.title}`
+      title: `${this.page.title}`
     }
   }
 }
