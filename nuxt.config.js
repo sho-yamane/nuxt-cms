@@ -1,3 +1,6 @@
+const axios = require('axios')
+// const config = require('./api/wp/config/index')
+
 module.exports = {
   /*
   ** Headers of the page
@@ -35,5 +38,19 @@ module.exports = {
     vendor: ['element-ui']
   },
   plugins: ['~plugins/element-ui', '~/plugins/mixin'],
-  css: ['element-ui/lib/theme-chalk/index.css']
+  css: ['element-ui/lib/theme-chalk/index.css'],
+  generate: {
+    routes: () => {
+      console.log('tets')
+      return axios
+        .get(
+          `https://sho-yamane.mixh.jp/sample/index.php/wp-json/wp/v2/posts?per_page=99`
+        )
+        .then(res => {
+          return res.data.map(post => {
+            return '/post/' + post.id
+          })
+        })
+    }
+  }
 }

@@ -41,7 +41,13 @@ export default {
             thumbnail: data['_embedded']['wp:featuredmedia']
               ? data['_embedded']['wp:featuredmedia'][0]['media_details'][
                   'sizes'
-                ][params.thumbnailSize]['source_url']
+                ][params.thumbnailSize]
+                ? data['_embedded']['wp:featuredmedia'][0]['media_details'][
+                    'sizes'
+                  ][params.thumbnailSize]['source_url']
+                : data['_embedded']['wp:featuredmedia'][0]['media_details'][
+                    'sizes'
+                  ]['full']['source_url']
               : null
           }
           console.log(filteredPost)
