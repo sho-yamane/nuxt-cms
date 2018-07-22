@@ -1,13 +1,14 @@
 <template lang="pug">
-  el-container.PostsIdPage
+  el-container.CatIdPage
     el-header
       app-header
     el-main
       app-posts(
-        title="ブログ"
+        title="News"
         type="posts"
         :page="page"
         :per-page="perPage"
+        :cat-slug="catSlug"
       )
     el-footer
       app-footer
@@ -19,11 +20,12 @@ import AppHeader from '../../components/AppHeader'
 import AppFooter from '../../components/AppFooter'
 import AppPosts from '../../components/AppPosts'
 export default {
-  name: 'PostsIdPage',
+  name: 'CatIdPage',
   components: { AppPosts, AppFooter, AppHeader },
   data() {
     return {
-      perPage: 9
+      perPage: 9,
+      catSlug: 'news'
     }
   },
   computed: {
@@ -33,13 +35,15 @@ export default {
     if (!Object.keys(store.state.meta).length) {
       await store.dispatch('fetchMeta')
     }
+
     return {
-      page: parseInt(params.id)
+      page: parseInt(params.id),
+      catSlug: params.slug
     }
   },
   head() {
     return {
-      title: `記事一覧(${this.page}ページ目) - ${this.meta.title}`
+      title: `${this.catSlug}(${this.page}ページ目) - ${this.meta.title}`
     }
   }
 }

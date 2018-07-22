@@ -17,10 +17,12 @@
             el-menu-item(index="1")
               nuxt-link(to="/about") このサイトについて
             el-menu-item(index="2")
-              nuxt-link(to="/posts") ブログ
+              nuxt-link(to="/news/1") News
             el-menu-item(index="3")
-              nuxt-link(to="/privacy-policy") プライバシーポリシー
+              nuxt-link(to="/posts/1") Blog
             el-menu-item(index="4")
+              nuxt-link(to="/privacy-policy") プライバシーポリシー
+            el-menu-item(index="5")
               nuxt-link(to="/contact") お問い合わせ
 </template>
 
@@ -68,7 +70,9 @@ export default {
     padding: 0;
     margin: 0;
     li {
+      padding: 0;
       a {
+        padding: 0 20px;
         color: #bfcbd9;
         text-decoration: none;
         line-height: 60px;

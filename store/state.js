@@ -1,3 +1,5 @@
 export default {
-  posts: {}
+  meta: {},
+  posts: {},
+  categories: []
 }

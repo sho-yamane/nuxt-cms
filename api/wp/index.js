@@ -3,10 +3,22 @@ import config from './config/index'
 
 export default {
   endpoint: config.endpoint,
+  getMeta() {
+    return new Promise((resolve, reject) => {
+      axios.defaults.baseURL = this.endpoint
+      axios.get().then(response => {
+        if (response.status === 200) {
+          resolve(response.data)
+        } else {
+          reject(response)
+        }
+      })
+    })
+  },
   getPage(params) {
     return new Promise((resolve, reject) => {
       axios.defaults.baseURL = this.endpoint
-      axios.get(`pages?_embed&slug=${params.slug}`).then(response => {
+      axios.get(`/wp/v2/pages?_embed&slug=${params.slug}`).then(response => {
         const data = [...response.data][0]
         if (response.status === 200 && response.data.length > 0) {
           const filteredPage = {
@@ -30,7 +42,7 @@ export default {
   getPost(params) {
     return new Promise((resolve, reject) => {
       axios.defaults.baseURL = this.endpoint
-      axios.get(`posts/${params.id}?_embed`).then(response => {
+      axios.get(`/wp/v2/posts/${params.id}?_embed`).then(response => {
         const data = response.data
         if (response.status === 200) {
           const filteredPost = {
@@ -50,7 +62,6 @@ export default {
                   ]['full']['source_url']
               : null
           }
-          console.log(filteredPost)
           resolve(filteredPost)
         } else {
           reject(response)
@@ -62,7 +73,14 @@ export default {
     return new Promise((resolve, reject) => {
       axios.defaults.baseURL = this.endpoint
       axios
-        .get(`posts?_embed&per_page=${params.perPage}&page=${params.page}`)
+        .get('/wp/v2/posts', {
+          params: {
+            _embed: 1,
+            per_page: params.perPage,
+            page: params.page,
+            categories: params.catId || null
+          }
+        })
         .then(response => {
           const data = [...response.data]
           if (response.status === 200 && response.data.length > 0) {
@@ -97,10 +115,15 @@ export default {
         })
     })
   },
-  getCategory() {
-    // 余裕があれば
-  },
   getCategories() {
-    // 余裕があれば
+    return new Promise(resolve => {
+      axios.defaults.baseURL = this.endpoint
+      return axios.get('/wp/v2/categories').then(response => {
+        const data = [...response.data]
+        if (response.status === 200 && response.data.length > 0) {
+          resolve(data)
+        }
+      })
+    })
   }
 }

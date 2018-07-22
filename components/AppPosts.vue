@@ -13,8 +13,8 @@
       .AppPosts_ButtonContainer(v-if="type === 'index'")
         el-button.AppPosts_Button(type="primary" @click="toAllPosts") 全記事見る
       .AppPosts_Pager(v-else-if="type === 'posts'")
-        el-button.AppPosts_Button(v-if="parseInt(page) !== 1" type="primary" @click="prevPage") Prev
-        el-button.AppPosts_Button(v-if="parseInt(page) < posts.totalPages" type="primary" @click="nextPage") Next
+        el-button.AppPosts_Button(v-if="page !== 1" type="primary" @click="prevPage") Prev
+        el-button.AppPosts_Button(v-if="page < posts.totalPages" type="primary" @click="nextPage") Next
 </template>
 
 <script>
@@ -43,6 +43,10 @@ export default {
     thumbnailSize: {
       type: String,
       default: 'large' // full or large or medium
+    },
+    catSlug: {
+      type: String,
+      default: null
     }
   },
   data() {
@@ -53,31 +57,48 @@ export default {
     }
   },
   computed: {
-    ...mapState(['posts'])
+    ...mapState(['posts', 'categories'])
   },
   async created() {
+    // catSlugに指定があり、Vuexのcategoriesが空の場合
+    if (this.catSlug && this.categories.length === 0) {
+      await this.fetchCategories()
+    }
+
+    const cat = this.categories.filter(cat => {
+      if (cat.slug === this.catSlug) {
+        return true
+      }
+    })
+
     const urlParams = {
       page: this.page,
       perPage: this.perPage,
+      catId: cat[0] ? cat[0].id : null,
       thumbnailSize: this.thumbnailSize
     }
+
     await this.fetchPosts(urlParams)
     this.loading = false
   },
   methods: {
-    ...mapActions(['fetchPosts']),
+    ...mapActions(['fetchPosts', 'fetchCategories']),
     toAllPosts() {
-      this.$router.push('/posts')
+      this.$router.push('/posts/1')
     },
     prevPage() {
-      if (parseInt(this.page) - 1 === 1) {
-        this.$router.push('/posts')
+      if (this.catSlug) {
+        this.$router.push(`/${this.catSlug}/${this.page - 1}`)
       } else {
-        this.$router.push(`/posts/${parseInt(this.page) - 1}`)
+        this.$router.push(`/posts/${this.page - 1}`)
       }
     },
     nextPage() {
-      this.$router.push(`/posts/${parseInt(this.page) + 1}`)
+      if (this.catSlug) {
+        this.$router.push(`/${this.catSlug}/${this.page + 1}`)
+      } else {
+        this.$router.push(`/posts/${this.page + 1}`)
+      }
     },
     dateFormat(date) {
       return this.$_dateFormat(date)
