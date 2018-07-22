@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import AppSlider from '../components/AppSlider.vue'
 import AppService from '../components/AppService.vue'
 import AppHeader from '../components/AppHeader'
@@ -25,6 +25,12 @@ export default {
   components: { AppPosts, AppFooter, AppHeader, AppSlider, AppService },
   computed: {
     ...mapState(['meta'])
+  },
+  created() {
+    this.fetchMeta()
+  },
+  methods: {
+    ...mapActions(['fetchMeta'])
   },
   head() {
     return {
