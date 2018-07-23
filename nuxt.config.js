@@ -1,19 +1,19 @@
 const axios = require('axios')
-// const config = require('./api/wp/config/index')
+const config = require('./api/wp/config/index')
 
 module.exports = {
   /*
   ** Headers of the page
   */
   head: {
-    titleTemplate: '%s - サイトタイトル',
+    titleTemplate: `%s - ${config.title}`,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
-        content: 'サイトディスクリプション'
+        content: `${config.description}`
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
@@ -43,15 +43,25 @@ module.exports = {
   },
   plugins: ['~plugins/element-ui', '~/plugins/mixin'],
   css: ['element-ui/lib/theme-chalk/index.css'],
+  modules: [
+    '@nuxtjs/pwa',
+    [
+      '@nuxtjs/google-analytics',
+      {
+        id: 'UA-XXXX-XXX'
+      }
+    ]
+  ],
+  manifest: {
+    name: `${config.title}`,
+    lang: 'ja'
+  },
   generate: {
     interval: 500,
     routes: () => {
-      const endpoint =
-        'https://sho-yamane.mixh.jp/sample/index.php/wp-json/wp/v2'
-
       return Promise.all([
-        axios.get(`${endpoint}/post_all_id`),
-        axios.get(`${endpoint}/page_all_slug`)
+        axios.get(`${config.endpoint}/post_all_id`),
+        axios.get(`${config.endpoint}/page_all_slug`)
       ]).then(data => {
         const posts = data[0]
         const pages = data[1]
