@@ -60,8 +60,8 @@ module.exports = {
     interval: 500,
     routes: () => {
       return Promise.all([
-        axios.get(`${config.endpoint}/post_all_id`),
-        axios.get(`${config.endpoint}/page_all_slug`)
+        axios.get(`${config.endpoint}/wp/v2/post_all_id`),
+        axios.get(`${config.endpoint}/wp/v2/page_all_slug`)
       ]).then(data => {
         const posts = data[0]
         const pages = data[1]
