@@ -14,7 +14,10 @@
 </template>
 
 <script>
+// [api] WordPress
 import api from '../../api/wp/index'
+// [api] Contentful
+// import api from '../../api/contentful/index'
 import AppHeader from '../../components/AppHeader'
 import AppFooter from '../../components/AppFooter'
 export default {

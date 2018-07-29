@@ -15,17 +15,17 @@
 </template>
 
 <script>
+// [api] WordPress
 import api from '../../api/wp/index'
+// [api] Contentful
+// import api from '../../api/contentful/index'
+
 import AppHeader from '../../components/AppHeader'
 import AppFooter from '../../components/AppFooter'
 import AppHeading from '../../components/AppHeading'
 export default {
   name: 'PostIdPage',
   components: { AppHeading, AppFooter, AppHeader },
-  validate({ params }) {
-    // 数値でなければならない
-    return /^\d+$/.test(params.id)
-  },
   async asyncData({ params }) {
     const urlParams = {
       id: params.id,

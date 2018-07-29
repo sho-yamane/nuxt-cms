@@ -108,6 +108,7 @@ export default {
       axios.defaults.baseURL = this.endpoint
       return axios.get('/wp/v2/categories').then(response => {
         const data = [...response.data]
+        console.log(data)
         if (response.status === 200 && response.data.length > 0) {
           resolve(data)
         }

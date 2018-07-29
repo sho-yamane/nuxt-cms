@@ -1,5 +1,14 @@
+// [WprdPress]
 const axios = require('axios')
 const config = require('./api/wp/config/index')
+
+// [Contentful]
+/* const config = require('./api/contentful/config/index')
+const contentful = require('./.contentful.js')
+const client = require('contentful').createClient({
+  space: contentful.CTF_SPACE_ID,
+  accessToken: contentful.CTF_CDA_ACCESS_TOKEN
+}) */
 
 module.exports = {
   /*
@@ -56,6 +65,7 @@ module.exports = {
     name: `${config.title}`,
     lang: 'ja'
   },
+  // [generate] WordPressの場合
   generate: {
     interval: 500,
     routes: () => {
@@ -83,4 +93,32 @@ module.exports = {
       })
     }
   }
+  // [generate] Contentfulの場合
+  /* generate: {
+    interval: 500,
+    routes: () => {
+      return Promise.all([
+        client.getEntries({ content_type: contentful.CTF_POST_TYPE_ID }),
+        client.getEntries({ content_type: contentful.CTF_PAGE_TYPE_ID })
+      ]).then(data => {
+        const posts = data[0]
+        const pages = data[1]
+        return posts.items
+          .map(post => {
+            return {
+              route: '/post/' + post.sys.id,
+              payload: post
+            }
+          })
+          .concat(
+            pages.items.map(page => {
+              return {
+                route: page.fields.slug,
+                payload: page
+              }
+            })
+          )
+      })
+    }
+  } */
 }

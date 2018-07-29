@@ -1,4 +1,7 @@
+// [api] WordPress
 import api from '../api/wp/index'
+// [api] Contentful
+// import api from '../api/contentful/index'
 
 export default {
   async nuxtServerInit({ dispatch }) {
